@@ -1,85 +1,66 @@
 # Online Exam Management System (QEMS)
 
-Online Quiz Examination System for efficient test-taking, auto-scoring, and report generation. QEMS offers secure login, speed, and requires minimal manpower for managing multi-instructors. It includes features like resumption capability, random question selection, distribution, and randomization of exam times.
+Online Quiz Examination System is a fast method to collect answers, auto-mark submissions, and develop examination methods with accuracy. QEMS supports secure login, speed, and requires less manpower to handle multiple instructors. It also offers portability features. Almost all organizations today use online examination systems to manage exams, reducing time in examinations. QEMS includes features like resumption capability, random question selection, random question distribution, and random student's time in examinations.
 
-## Functionality
+## Project Functions:
 
-### For Everyone
+### For Everybody
+- Show Home Page
 
-- **Home Page:**
-  - Access the home page with general information about the system.
+### For Teacher
+- Teacher Registration
+- Teacher Login
+- Create Class
+- Upload Class Materials
+- Create Quiz Exam
 
-### For Teachers
+### For Student
+- Student Registration
+- Student Login
+- Join Class
+- Archive Class
+- Show/Download Class Material
+- Give Exam
+- Show Exam Result
 
-- **Teacher Registration:**
-  - Register as a teacher to gain access to the system.
+## Prerequisites
 
-- **Teacher Login:**
-  - Log in with credentials to manage classes and exams.
+Make sure you have the following installed on your machine:
 
-- **Create Class:**
-  - Set up classes to organize students.
-
-- **Upload Class Materials:**
-  - Share study materials with students by uploading files.
-
-- **Create Quiz Exam:**
-  - Design and publish quiz exams for students.
-
-### For Students
-
-- **Student Registration:**
-  - Register as a student to participate in classes and exams.
-
-- **Student Login:**
-  - Log in with credentials to access student features.
-
-- **Join Class:**
-  - Enroll in classes created by teachers.
-
-- **Archive Class:**
-  - Remove or archive classes that are no longer active.
-
-- **Show/Download Class Material:**
-  - Access and download study materials shared by teachers.
-
-- **Give Exam:**
-  - Participate in quiz exams created by teachers.
-
-- **Show Exam Result:**
-  - View and analyze exam results.
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
 ## Getting Started
 
-Follow these steps to set up and run the Online Exam Management System:
+Follow these steps to run the project locally:
 
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-username/qems.git
-    cd qems
+    git clone https://github.com/shipanmazumder/ems-docker.git
+    cd ems-docker
     ```
 
-2. Set up the necessary environment variables.
+2. Create a `.env` file in the project root and configure any environment variables needed by your Node.js application. For example:
 
-3. Install dependencies:
+    ```env
+    PORT=3000
+    DATABASE_URL=mongodb://mongo:27017/your-database
+    ```
+
+3. Start the application using Docker Compose:
 
     ```bash
-    npm install
+    docker-compose up
     ```
 
-4. Start the application:
+    This will build the Docker images and start the containers.
 
-    ```bash
-    npm start
-    ```
+4. Access your application at `http://localhost:3000` in your web browser.
 
-5. Access the application at `http://localhost:3000` in your web browser.
+## Stopping the Application
 
-## Contributing
+To stop the application and remove the containers, run:
 
-If you'd like to contribute to this project, please follow the [contribution guidelines](CONTRIBUTING.md).
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
+```bash
+docker-compose down

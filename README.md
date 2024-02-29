@@ -44,8 +44,16 @@ Follow these steps to run the project locally:
 2. Create a `.env` file in the api root and configure any environment variables needed by your Node.js application. For example:
 
     ```env
+    DATABASE_URL="mongodb://mongo:27017/ems"
     PORT=4000
-    DATABASE_URL=mongodb://mongo:27017/your-database
+    AWS_BUCKET_NAME="your bucket name"
+    AWS_BUCKET_REGION="aws region"
+    AWS_ACCESS_KEY="access key"
+    AWS_SECRET_KEY="secret key"
+
+    REDIS_HOST=redis
+    REDIS_PORT=6379
+    REDIS_CACHE_TIMEOUT=120
     ```
 
 3. Start the application using Docker Compose:

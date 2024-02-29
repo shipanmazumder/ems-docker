@@ -1,0 +1,6 @@
+.vagrant
+node_modules
+.vscode
+frontend
+backend
+data

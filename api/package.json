@@ -1,0 +1,45 @@
+{
+  "name": "broadcast",
+  "version": "1.0.0",
+  "description": "Game Broadcast System",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/app.js",
+    "server": "nodemon src/app.js",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "keywords": [],
+  "author": "Shipan Mazumder",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1213.0",
+    "axios": "^0.26.0",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.2",
+    "concurrently": "^7.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "express-validator": "^6.14.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.4",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "nanoid": "^3.3.2",
+    "node-fetch": "^3.2.1",
+    "nodemon": "^2.0.15",
+    "passport": "^0.5.2",
+    "passport-jwt": "^4.0.0",
+    "redis": "^4.6.13",
+    "sass": "^1.49.9",
+    "socket.io": "^4.4.1",
+    "util": "^0.12.5",
+    "uuid": "^8.3.2",
+    "winston": "^3.6.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.6.1"
+  }
+}

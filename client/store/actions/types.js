@@ -1,0 +1,13 @@
+export const SET_USER = 'SET_USER';
+export const USER_ERROR = 'USER_ERROR';
+export const SET_MESSAGE = 'SET_MESSAGE';
+export const LOAD_CLASSES = 'LOAD_CLASSES';
+export const SET_CLASSES = 'SET_CLASSES';
+export const SET_CLASS = 'SET_CLASS';
+export const CLASS_ERROR = 'CLASS_ERROR';
+export const UPDATE_CLASS = 'UPDATE_CLASS';
+export const SET_EXAM = 'SET_EXAM';
+export const LOAD_EXAMS = 'LOAD_EXAMS';
+export const SET_EXAMS = 'SET_EXAMS';
+export const EXAM_ERRORS = 'EXAM_ERRORS';
+export const SET_JOIN_CLASS = 'JOIN_CLASS';

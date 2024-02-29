@@ -1,0 +1,312 @@
+import {
+  Flex,
+  Stack,
+  Text,
+  Input,
+  Textarea,
+  InputGroup,
+  InputLeftAddon,
+  Button,
+  Divider,
+} from "@chakra-ui/react";
+import Layout from "@/components/Layout";
+import { Component, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import {connect} from "react-redux";
+import {examCreate} from "../../../store/actions/examAction";
+
+function CreateExam(props) {
+  const router = useRouter();
+  const classCode = router.query.classCode;
+  const option = { option: "" };
+  const questions = { title: "", options: [], answer: "" };
+  const [examInfo, setExamInfo] = useState({
+    classCode: "",
+    examName: "",
+    examDate: "",
+    examTime: "",
+    perQuestionMark: 0,
+    questions: [],
+  });
+  const totalOption = [1, 2, 3, 4];
+  const tempQuestion = [1];
+  useEffect(async () => {
+    if (!router.isReady) return;
+    setExamInfo({...examInfo,classCode:classCode})
+
+  }, [router.isReady]);
+
+  useEffect(() => {
+    if (!props.auth.isTeacher) router.push("/teacher/login");
+  }, [props.auth]);
+
+  useEffect(() => {
+    setDefaultOptions();
+  }, []);
+
+  useEffect(() => {
+    for (let i=0; i<tempQuestion.length; i++){
+      setDefaultExamInfo();
+    }
+  },[]);
+
+  const setDefaultOptions = () => {
+    totalOption.map((value, index) => {
+      questions.options.push(option);
+    });
+  };
+  const setDefaultExamInfo = () => {
+    examInfo.questions.push(questions);
+    setExamInfo({...examInfo,questions: examInfo.questions});
+  };
+
+  const updateOption = (index, optionIndex, value) => {
+    console.log("q index " + index);
+    console.log("q len " + examInfo.questions.length);
+    if (examInfo.questions.length > 0) {
+      let oldQuestion = examInfo.questions[index];
+      if (oldQuestion) {
+        console.log("old q " + oldQuestion.options.length);
+        if (oldQuestion.options.length > 0) {
+          let singleOption = oldQuestion.options[optionIndex];
+          console.log(singleOption);
+          if (singleOption) {
+            singleOption.option = value;
+            oldQuestion.options[optionIndex] = singleOption;
+          } else {
+            let newOption = {
+              option: value,
+            };
+            oldQuestion.options.push(newOption);
+          }
+        } else {
+          let newOption = {
+            option: value,
+          };
+          oldQuestion.options.push(newOption);
+        }
+        examInfo.questions[index] = oldQuestion;
+      }
+
+      setExamInfo({ ...examInfo, questions: examInfo.questions });
+    }
+  };
+  const updateQuestionTitle = (index, value) => {
+    if (examInfo.questions.length > 0) {
+      let singleQuestion = examInfo.questions[index];
+      if (singleQuestion) {
+        singleQuestion.title = value;
+        examInfo.questions[index] = singleQuestion;
+      } else {
+        let newQuestion = {
+          title: value,
+          options: [],
+          answer: "",
+        };
+        examInfo.questions.push(newQuestion);
+      }
+      setExamInfo({ ...examInfo, questions: examInfo.questions });
+    } else {
+      let newQuestion = [
+        {
+          title: value,
+          options: [],
+          answer: "",
+        },
+      ];
+      setExamInfo({ ...examInfo, questions: newQuestion });
+    }
+  };
+  const updateQuestionAnswer = (index, value) => {
+    if (examInfo.questions.length > 0) {
+      let singleQuestion = examInfo.questions[index];
+      if (singleQuestion) {
+        singleQuestion.answer = value;
+        examInfo.questions[index] = singleQuestion;
+      } else {
+        let newQuestion = {
+          title: "",
+          options: [],
+          answer: value,
+        };
+        examInfo.questions.push(newQuestion);
+      }
+      setExamInfo({ ...examInfo, questions: examInfo.questions });
+    } else {
+      let newQuestion = [
+        {
+          title: "",
+          options: [],
+          answer: value,
+        },
+      ];
+      setExamInfo({ ...examInfo, questions: newQuestion });
+    }
+  };
+
+  const changeHandler = (e) => {
+    setExamInfo({ ...examInfo, [e.target.name]: e.target.value,classCode: classCode });
+    // setExamInfo({ ...examInfo, classCode: classCode });
+  };
+  const changeTemp = (e) => {
+  tempQuestion.push(5);
+  console.log(tempQuestion.length)
+  };
+  useEffect(()=>{
+    console.log(examInfo)
+  },[examInfo])
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    await props.examCreate(examInfo,router);
+  };
+  return (
+    <Layout metaTitle={"Create Exam"}>
+      <Flex
+        minH={"90vh"}
+        align={"center"}
+        justify={"center"}
+        py={12}
+        bg={"gray.50"}
+      >
+        <Stack boxShadow={"2xl"} bg={"white"} rounded={"xl"} p={10} spacing={8}>
+          <Stack spacing={2}>
+            <Text fontSize={"2xl"} color={"gray.500"}>
+              Create Exam
+            </Text>
+          </Stack>
+          <form onSubmit={submitHandler}>
+            <Stack spacing={4} w={"full"}>
+              <Input
+                type="text"
+                placeholder="Exam title"
+                name={"sds"}
+                onChange={changeTemp}
+              />  <Input
+                type="text"
+                placeholder="Exam title"
+                name={"examName"}
+                onChange={changeHandler}
+              />
+              <Input
+                type="date"
+                placeholder="Exam Date"
+                name={"examDate"}
+                onChange={changeHandler}
+              />
+              <Input
+                type="time"
+                placeholder="Exam Time"
+                name={"examTime"}
+                onChange={changeHandler}
+              />
+              <Input
+                type="text"
+                placeholder="Question Mark"
+                name={"perQuestionMark"}
+                onChange={changeHandler}
+              />
+            </Stack>
+
+            <Divider shadow={"none"} bg={"gray.500"} />
+            {tempQuestion.map((value, index) => (
+              <Stack key={index}>
+                <Stack spacing={4} w={"full"}>
+                  <Input
+                    type="text"
+                    onChange={(e) =>
+                      updateQuestionTitle(index, e.currentTarget.value)
+                    }
+                    placeholder="Question"
+                  />
+                  <InputGroup>
+                    <InputLeftAddon children="A" />
+                    <Input
+                      type="text"
+                      name={"A"}
+                      onChange={(e) =>
+                        updateOption(index, 0, e.currentTarget.value)
+                      }
+                      placeholder="Option 1"
+                    />
+                  </InputGroup>
+                  <InputGroup>
+                    <InputLeftAddon children="B" />
+                    <Input
+                      type="text"
+                      name={"B"}
+                      onChange={(e) =>
+                        updateOption(index, 1, e.currentTarget.value)
+                      }
+                      placeholder="Option 2"
+                    />
+                  </InputGroup>
+                  <InputGroup>
+                    <InputLeftAddon children="C" />
+                    <Input
+                      type="text"
+                      name={"C"}
+                      onChange={(e) =>
+                        updateOption(index, 2, e.currentTarget.value)
+                      }
+                      placeholder="Option 3"
+                    />
+                  </InputGroup>
+                  <InputGroup>
+                    <InputLeftAddon children="D" />
+                    <Input
+                      type="text"
+                      name={"D"}
+                      onChange={(e) =>
+                        updateOption(index, 3, e.currentTarget.value)
+                      }
+                      placeholder="Option 4"
+                    />
+                  </InputGroup>
+                  <InputGroup>
+                    <InputLeftAddon children="Correct Answer" />
+                    <Input
+                      type="text"
+                      onChange={(e) =>
+                        updateQuestionAnswer(index, e.currentTarget.value)
+                      }
+                      placeholder="ex: B"
+                    />
+                  </InputGroup>
+                </Stack>
+
+                <Divider shadow={"none"} bg={"gray.500"} />
+              </Stack>
+            )
+
+            )}
+            <Button
+                type={"submit"}
+              bg={"teal.400"}
+              rounded={"lg"}
+              color={"white"}
+              flex={"1 0 auto"}
+              _hover={{ bg: "teal.500" }}
+              _focus={{ bg: "teal.500" }}
+            >
+              Create Quiz
+            </Button>
+          </form>
+        </Stack>
+      </Flex>
+    </Layout>
+  );
+}
+
+function mapStateToProps(state) {
+  return {
+    auth: state.auth
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+     examCreate: (examInfo, router) =>
+      dispatch(examCreate(examInfo, router)),
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(CreateExam);

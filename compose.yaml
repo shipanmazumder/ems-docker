@@ -1,0 +1,63 @@
+version: "3.8"
+services:
+  frontend:
+    build:
+      context: client
+    ports:
+      - 3000:3000
+    stdin_open: true
+    volumes:
+      - frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: always
+    depends_on:
+      - backend
+
+  backend:
+    restart: always
+    container_name: backend
+    build:
+      context: api
+    volumes:
+      - backend:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - redis
+      - mongo
+    ports:
+      - 4000:4000
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+  mongo:
+    restart: always
+    image: mongo
+    volumes:
+      - mongo:/data/db
+    expose:
+      - 27017
+  redis:
+    image: "redis:alpine"
+    expose:
+     - "6379"
+    ports:
+     - "6379:6379"
+    container_name: redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1s
+      timeout: 2s
+      retries: 10
+  reactweb:
+    build:
+      context: nginx
+    container_name: reactweb
+    ports:
+      - 80:80
+    depends_on:
+      - frontend
+      - backend
+volumes:
+  mongo: {}
+  backend: {}
+  frontend: {}

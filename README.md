@@ -41,10 +41,10 @@ Follow these steps to run the project locally:
     cd ems-docker
     ```
 
-2. Create a `.env` file in the project root and configure any environment variables needed by your Node.js application. For example:
+2. Create a `.env` file in the api root and configure any environment variables needed by your Node.js application. For example:
 
     ```env
-    PORT=3000
+    PORT=4000
     DATABASE_URL=mongodb://mongo:27017/your-database
     ```
 
